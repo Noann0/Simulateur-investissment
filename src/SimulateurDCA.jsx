@@ -294,12 +294,15 @@ export default function SimulateurDCA() {
         ::-webkit-scrollbar { width:3px; }
         ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.08); border-radius:2px; }
 
+        @media (max-width: 900px) {
+          .sim-params-grid { grid-template-columns: 1fr 1fr !important; }
+        }
         @media (max-width: 768px) {
           .sim-params-grid { grid-template-columns: 1fr !important; }
           .sim-stats-grid { grid-template-columns: 1fr !important; }
           .sim-container { padding: 28px 16px 48px !important; }
           .sim-header-title { font-size: 32px !important; }
-          .sim-param-value { font-size: 32px !important; }
+          .sim-param-value { font-size: 28px !important; }
           .sim-stat-value { font-size: 24px !important; }
           .sim-chart-box { padding: 16px !important; }
           .sim-chart-legend { display: none !important; }
@@ -314,14 +317,12 @@ export default function SimulateurDCA() {
           .sim-chip-row { gap: 6px !important; }
           .sim-chip-row button { padding: 8px 10px !important; font-size: 11px !important; }
         }
-
         @media (max-width: 480px) {
           .sim-header-title { font-size: 26px !important; }
-          .sim-param-value { font-size: 28px !important; }
+          .sim-param-value { font-size: 24px !important; }
           .sim-stat-value { font-size: 20px !important; }
           .sim-stats-grid { gap: 8px !important; }
           .sim-chip-row button { padding: 7px 8px !important; font-size: 10px !important; }
-          .sim-chip-row button span:last-child { display: none !important; }
           .sim-table-grid { grid-template-columns: 44px 1fr 1fr 1fr 1fr !important; padding: 8px 8px !important; }
         }
       `}</style>
