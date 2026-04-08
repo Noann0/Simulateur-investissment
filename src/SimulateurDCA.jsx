@@ -280,6 +280,102 @@ export default function SimulateurDCA() {
   const etfs = useMemo(() =>
     Object.entries(actives).filter(([,v])=>v).flatMap(([k]) => ASSETS[k].etfs.map(e=>({...e, asset: ASSETS[k].label, color: ASSETS[k].color}))), [actives]);
 
+  const generateExportHTML = () => {
+    const date = new Date().toLocaleDateString("fr-FR", { year:"numeric", month:"long", day:"numeric" });
+    const activeList = Object.entries(actives).filter(([,v])=>v).map(([k]) => ({
+      key: k, label: ASSETS[k].label, icon: ASSETS[k].icon, alloc: allocs[k],
+      staking: ASSETS[k].staking,
+    }));
+    const rows = (projs?.[scenario] || []).filter(d => d.year > 0).map(d => `
+      <tr>
+        <td>Année ${d.year}</td>
+        <td>${Math.round(d.invested).toLocaleString("fr-FR")} €</td>
+        <td>${Math.round(projs.pessimiste.find(x=>x.year===d.year)?.value ?? 0).toLocaleString("fr-FR")} €</td>
+        <td>${Math.round(d.value).toLocaleString("fr-FR")} €</td>
+        <td>${Math.round(projs.optimiste.find(x=>x.year===d.year)?.value ?? 0).toLocaleString("fr-FR")} €</td>
+      </tr>`).join("");
+
+    const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mon Plan d'Investissement DCA</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family: 'Segoe UI', sans-serif; background:#0b0b0f; color:#eae6dc; padding:40px 32px; max-width:900px; margin:0 auto; }
+  @media print { body { background:#fff; color:#111; } .no-print { display:none; } }
+  h1 { font-size:36px; font-weight:300; margin-bottom:6px; color:#4ade80; }
+  .meta { font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:40px; }
+  .section-title { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:12px; margin-top:32px; }
+  .params-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
+  @media(max-width:600px) { .params-grid { grid-template-columns:1fr; } }
+  .param-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:20px; }
+  .param-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:8px; }
+  .param-value { font-size:28px; font-weight:600; color:#eae6dc; }
+  .param-unit { font-size:18px; color:#4ade80; font-weight:400; }
+  .alloc-row { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .alloc-bar { flex:1; height:4px; background:rgba(255,255,255,0.04); border-radius:2px; overflow:hidden; }
+  .alloc-fill { height:100%; border-radius:2px; }
+  table { width:100%; border-collapse:collapse; margin-top:8px; }
+  th { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.25); text-align:right; padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  th:first-child { text-align:left; }
+  td { font-size:12px; font-family:monospace; text-align:right; padding:10px 16px; border-bottom:1px solid rgba(255,255,255,0.03); }
+  td:first-child { text-align:left; color:rgba(255,255,255,0.4); }
+  tr:hover td { background:rgba(74,222,128,0.03); }
+  .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:32px; }
+  @media(max-width:600px) { .stats-grid { grid-template-columns:1fr; } }
+  .stat-card { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:18px; text-align:center; }
+  .stat-label { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:8px; }
+  .stat-value { font-size:24px; font-weight:600; }
+  .footer { margin-top:40px; font-size:10px; color:rgba(255,255,255,0.15); text-align:center; line-height:1.8; }
+  .print-btn { margin-top:24px; padding:12px 24px; background:#4ade80; color:#0b0b0f; border:none; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; }
+</style>
+</head>
+<body>
+  <h1>Mon Plan DCA</h1>
+  <div class="meta">Généré le ${date} · Scénario : ${scenario.charAt(0).toUpperCase()+scenario.slice(1)}</div>
+  <div class="section-title">Paramètres</div>
+  <div class="params-grid">
+    <div class="param-card"><div class="param-label">Capital de départ</div><div class="param-value">${initialCapital.toLocaleString("fr-FR")} <span class="param-unit">€</span></div></div>
+    <div class="param-card"><div class="param-label">Versement mensuel</div><div class="param-value">${monthly.toLocaleString("fr-FR")} <span class="param-unit">€/mois</span></div></div>
+    <div class="param-card"><div class="param-label">Durée</div><div class="param-value">${years} <span class="param-unit">ans</span></div></div>
+  </div>
+  <div class="section-title">Allocation</div>
+  ${activeList.map(a => `
+  <div class="alloc-row">
+    <span style="font-size:16px">${a.icon}</span>
+    <span style="font-size:13px;min-width:160px">${a.label}${a.staking ? ` <span style="font-size:10px;color:#4ade80">(staking +${a.staking}%)</span>` : ""}</span>
+    <div class="alloc-bar"><div class="alloc-fill" style="width:${a.alloc}%;background:#4ade80"></div></div>
+    <span style="font-size:14px;font-family:monospace;min-width:44px;text-align:right">${a.alloc}%</span>
+  </div>`).join("")}
+  <div class="section-title" style="margin-top:32px">Résultats estimés</div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">Capital investi</div><div class="stat-value" style="color:#eae6dc">${Math.round(totalInv).toLocaleString("fr-FR")} €</div></div>
+    <div class="stat-card"><div class="stat-label">Valeur finale (${scenario})</div><div class="stat-value" style="color:#4ade80">${Math.round(finalV).toLocaleString("fr-FR")} €</div></div>
+    <div class="stat-card"><div class="stat-label">Gains générés</div><div class="stat-value" style="color:${gains>=0?"#4ade80":"#ef4444"}">${gains>=0?"+":""}${Math.round(gains).toLocaleString("fr-FR")} €</div></div>
+  </div>
+  <div class="section-title">Projection année par année</div>
+  <table>
+    <thead><tr><th>Année</th><th>Investi</th><th>Pessimiste</th><th>Réaliste</th><th>Optimiste</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="footer">Rendements passés ne préjugent pas des rendements futurs · Simulation indicative · Pas de frais ni fiscalité inclus<br/>Généré avec Simulateur DCA</div>
+  <div class="no-print" style="text-align:center;margin-top:32px">
+    <button class="print-btn" onclick="window.print()">Imprimer / Sauvegarder en PDF</button>
+  </div>
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type:"text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `plan-dca-${new Date().toISOString().slice(0,10)}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "#0b0b0f", color: "#eae6dc", fontFamily: "'Sora', sans-serif" }}>
       <style>{FONTS_CSS}{`
@@ -618,6 +714,22 @@ export default function SimulateurDCA() {
 
             <div style={{ textAlign:"center", marginTop:"40px", fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.1)", letterSpacing:"0.5px" }}>
               Rendements passés ne préjugent pas des rendements futurs · Simulation indicative · Pas de frais ni fiscalité inclus
+            </div>
+
+            {/* Export */}
+            <div style={{ textAlign:"center", marginTop:"32px", animation:"fadeUp 0.6s ease 0.3s both" }}>
+              <button onClick={generateExportHTML} style={{
+                fontFamily:"'Sora'", fontSize:"13px", fontWeight:600,
+                padding:"14px 32px", borderRadius:"12px",
+                border:"1px solid rgba(74,222,128,0.3)", background:"rgba(74,222,128,0.08)",
+                color:"#4ade80", cursor:"pointer", letterSpacing:"0.5px", transition:"all 0.3s",
+              }}
+                onMouseEnter={e=>{e.currentTarget.style.background="rgba(74,222,128,0.15)";e.currentTarget.style.borderColor="rgba(74,222,128,0.5)";}}
+                onMouseLeave={e=>{e.currentTarget.style.background="rgba(74,222,128,0.08)";e.currentTarget.style.borderColor="rgba(74,222,128,0.3)";}}
+              >
+                ↓ Exporter mon plan
+              </button>
+              <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.2)", marginTop:"8px" }}>Fichier HTML · Imprimable en PDF via Ctrl+P</div>
             </div>
           </>
         )}
