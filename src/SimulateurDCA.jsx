@@ -6,52 +6,124 @@ const FONTS_CSS = `
 `;
 
 const ASSETS = {
+  // ETFs Actions
   msci_world: {
     label: "MSCI World", short: "World", icon: "🌍", color: "#4ade80",
     pessimiste: 5, realiste: 8, optimiste: 10.5, bullrun: 12,
     description: "1 600+ entreprises · 23 pays développés",
+    staking: null,
     etfs: [
       { name: "Amundi MSCI World", ticker: "CW8", fee: "0,12%", note: "Le plus populaire en France · Réplication physique" },
       { name: "iShares Core MSCI World", ticker: "IWDA", fee: "0,20%", note: "Très liquide · 1600+ entreprises · BlackRock" },
       { name: "Lyxor MSCI World", ticker: "LCWD", fee: "0,12%", note: "Alternative française · Bonne liquidité" },
     ],
   },
-  emerging: {
-    label: "Emerging Markets", short: "EM", icon: "🌏", color: "#f59e0b",
-    pessimiste: 3, realiste: 7, optimiste: 11, bullrun: 14,
-    description: "Inde, Chine, Brésil · Croissance future",
-    etfs: [
-      { name: "iShares Core MSCI EM IMI", ticker: "EIMI", fee: "0,18%", note: "Large + mid + small caps · Très diversifié" },
-      { name: "Amundi MSCI Emerging Markets", ticker: "AEEM", fee: "0,20%", note: "Éligible PEA · Synthétique" },
-    ],
-  },
   sp500: {
     label: "S&P 500", short: "S&P", icon: "🇺🇸", color: "#60a5fa",
     pessimiste: 6, realiste: 9.5, optimiste: 11, bullrun: 13,
     description: "500 plus grandes entreprises US",
+    staking: null,
     etfs: [
       { name: "Amundi S&P 500", ticker: "500", fee: "0,15%", note: "Éligible PEA · Très populaire" },
       { name: "iShares Core S&P 500", ticker: "CSPX", fee: "0,07%", note: "Frais les plus bas · Capitalisant" },
     ],
   },
+  emerging: {
+    label: "Emerging Markets", short: "EM", icon: "🌏", color: "#f59e0b",
+    pessimiste: 3, realiste: 7, optimiste: 11, bullrun: 14,
+    description: "Inde, Chine, Brésil · Croissance future",
+    staking: null,
+    etfs: [
+      { name: "iShares Core MSCI EM IMI", ticker: "EIMI", fee: "0,18%", note: "Large + mid + small caps · Très diversifié" },
+      { name: "Amundi MSCI Emerging Markets", ticker: "AEEM", fee: "0,20%", note: "Éligible PEA · Synthétique" },
+    ],
+  },
+  nasdaq: {
+    label: "NASDAQ 100", short: "QQQ", icon: "💻", color: "#a78bfa",
+    pessimiste: 7, realiste: 12, optimiste: 16, bullrun: 20,
+    description: "100 plus grandes tech US · Apple, NVIDIA, Meta",
+    staking: null,
+    etfs: [
+      { name: "Amundi NASDAQ-100", ticker: "ANX", fee: "0,22%", note: "Éligible PEA · Réplication synthétique" },
+      { name: "iShares NASDAQ 100", ticker: "CNDX", fee: "0,33%", note: "Réplication physique · Très liquide" },
+    ],
+  },
+  stoxx600: {
+    label: "Europe Stoxx 600", short: "EU600", icon: "🇪🇺", color: "#38bdf8",
+    pessimiste: 4, realiste: 7, optimiste: 9, bullrun: 11,
+    description: "600 entreprises européennes · Dividendes élevés",
+    staking: null,
+    etfs: [
+      { name: "iShares STOXX Europe 600", ticker: "EXSA", fee: "0,20%", note: "Très diversifié · 17 pays européens" },
+      { name: "Amundi STOXX Europe 600", ticker: "CS6", fee: "0,07%", note: "Frais très bas · Capitalisant" },
+    ],
+  },
+  semiconductors: {
+    label: "Semiconducteurs", short: "SEMI", icon: "⚡", color: "#fb923c",
+    pessimiste: 8, realiste: 14, optimiste: 20, bullrun: 28,
+    description: "NVIDIA, TSMC, ASML · Secteur le plus performant",
+    staking: null,
+    etfs: [
+      { name: "VanEck Semiconductor ETF", ticker: "SMH", fee: "0,35%", note: "35 leaders mondiaux des semi-conducteurs" },
+      { name: "iShares Semiconductor ETF", ticker: "SOXX", fee: "0,35%", note: "30 entreprises US · NVIDIA, Intel, Qualcomm" },
+    ],
+  },
+  japan: {
+    label: "MSCI Japan", short: "JPN", icon: "🗾", color: "#f472b6",
+    pessimiste: 3, realiste: 6, optimiste: 8.5, bullrun: 11,
+    description: "Toyota, Sony, SoftBank · 2e marché développé",
+    staking: null,
+    etfs: [
+      { name: "iShares MSCI Japan", ticker: "IJPA", fee: "0,12%", note: "Large + mid caps · 240+ entreprises" },
+      { name: "Amundi MSCI Japan", ticker: "CJ1", fee: "0,12%", note: "Éligible PEA · Synthétique" },
+    ],
+  },
+  // Crypto
   bitcoin: {
     label: "Bitcoin", short: "BTC", icon: "₿", color: "#f97316",
     pessimiste: -5, realiste: 15, optimiste: 30, bullrun: 50,
     description: "Crypto · Haute volatilité · Max 10% recommandé",
+    staking: null,
     etfs: [
-      { name: "Achat direct", ticker: "BTC", fee: "~1%", note: "Via Trade Republic · Spread variable" },
+      { name: "Bitcoin", ticker: "BTC", fee: "~1%", note: "Via Trade Republic · Achat direct" },
     ],
   },
+  ethereum: {
+    label: "Ethereum", short: "ETH", icon: "Ξ", color: "#818cf8",
+    pessimiste: -8, realiste: 18, optimiste: 35, bullrun: 60,
+    description: "Smart contracts · Staking 2.52% sur Trade Republic",
+    staking: 2.52,
+    etfs: [
+      { name: "Ethereum", ticker: "ETH", fee: "~1%", note: "Via Trade Republic · Staking 2.52%/an inclus" },
+    ],
+  },
+  solana: {
+    label: "Solana", short: "SOL", icon: "◎", color: "#34d399",
+    pessimiste: -10, realiste: 20, optimiste: 45, bullrun: 80,
+    description: "Haute performance · Staking 5.42% sur Trade Republic",
+    staking: 5.42,
+    etfs: [
+      { name: "Solana", ticker: "SOL", fee: "~1%", note: "Via Trade Republic · Staking 5.42%/an inclus" },
+    ],
+  },
+  // Défensifs
   or: {
     label: "Or", short: "Gold", icon: "🥇", color: "#d4a24e",
     pessimiste: 1, realiste: 4, optimiste: 7, bullrun: 9,
     description: "Valeur refuge · Couverture inflation",
+    staking: null,
     etfs: [
       { name: "Amundi Physical Gold", ticker: "GOLD", fee: "0,15%", note: "Or physique · ETC" },
       { name: "iShares Physical Gold", ticker: "IGLN", fee: "0,12%", note: "Adossé à de l'or physique · Très liquide" },
     ],
   },
 };
+
+const CATEGORIES = [
+  { key: "etfs", label: "ETFs Actions", icon: "📈", assets: ["msci_world","sp500","emerging","nasdaq","stoxx600","semiconductors","japan"] },
+  { key: "crypto", label: "Crypto", icon: "₿", assets: ["bitcoin","ethereum","solana"] },
+  { key: "defensifs", label: "Défensifs", icon: "🏦", assets: ["or"] },
+];
 
 const SCENARIOS = [
   { key: "pessimiste", label: "Pessimiste", pct: "5%", color: "#ef4444" },
