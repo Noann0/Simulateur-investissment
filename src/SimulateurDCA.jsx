@@ -286,6 +286,9 @@ export default function SimulateurDCA() {
         @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
         @keyframes countUp { from { opacity:0; filter:blur(8px); } to { opacity:1; filter:blur(0); } }
         @keyframes dotPulse { 0%,100% { opacity:0.03; } 50% { opacity:0.06; } }
+        @keyframes haloShift { 0% { transform: translate(0,0) scale(1); } 33% { transform: translate(30px,-20px) scale(1.05); } 66% { transform: translate(-20px,15px) scale(0.97); } 100% { transform: translate(0,0) scale(1); } }
+        @keyframes haloShift2 { 0% { transform: translate(0,0) scale(1); } 33% { transform: translate(-25px,20px) scale(1.03); } 66% { transform: translate(20px,-10px) scale(0.98); } 100% { transform: translate(0,0) scale(1); } }
+        @keyframes scanLine { 0% { opacity:0; transform:translateY(-10px); } 40% { opacity:1; } 100% { opacity:0; transform:translateY(4px); } }
         @keyframes gradShift { 0% { background-position:0% 50%; } 50% { background-position:100% 50%; } 100% { background-position:0% 50%; } }
         input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:#eae6dc; border:2px solid #0b0b0f; cursor:pointer; box-shadow:0 0 12px rgba(234,230,220,0.2); transition:all 0.2s; }
         input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.25); box-shadow:0 0 20px rgba(234,230,220,0.4); }
@@ -332,13 +335,26 @@ export default function SimulateurDCA() {
       <div className="sim-container" style={{ position:"relative", zIndex:1, maxWidth:"960px", margin:"0 auto", padding:"48px 32px 64px" }}>
 
         {/* Header */}
-        <div style={{ marginBottom:"48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ fontFamily:"'Sora'", fontSize:"11px", color:"rgba(255,255,255,0.25)", letterSpacing:"4px", textTransform:"uppercase", marginBottom:"12px" }}>// Simulateur DCA</div>
-          <h1 className="sim-header-title" style={{ fontFamily:"'DM Serif Display'", fontSize:"clamp(36px,6vw,56px)", fontWeight:400, lineHeight:1.1, color:"#eae6dc", margin:0 }}>
-            Ton capital dans{" "}
-            <span style={{ color:"#4ade80", fontStyle:"italic", background:"linear-gradient(90deg,#4ade80,#60a5fa,#4ade80)", backgroundSize:"200% 100%", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", animation:"gradShift 4s ease infinite" }}>{years} ans</span>
-          </h1>
-          <p style={{ fontFamily:"'Sora'", fontSize:"14px", color:"rgba(255,255,255,0.25)", marginTop:"10px", fontWeight:300 }}>Basé sur les données historiques · Rendements annualisés</p>
+        <div style={{ marginBottom:"48px", animation:"fadeUp 0.6s ease both", position:"relative", overflow:"hidden", borderRadius:"20px", padding:"48px 40px 52px", minHeight:"220px" }}>
+          {/* Fond halftone */}
+          <div style={{
+            position:"absolute", inset:0, zIndex:0, overflow:"hidden", borderRadius:"20px",
+            background:"rgba(255,255,255,0.01)", border:"1px solid rgba(255,255,255,0.04)",
+          }}>
+            <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle, rgba(74,222,128,0.18) 1px, transparent 1px)", backgroundSize:"22px 22px", maskImage:"radial-gradient(ellipse 80% 90% at 75% 50%, black 20%, transparent 75%)", WebkitMaskImage:"radial-gradient(ellipse 80% 90% at 75% 50%, black 20%, transparent 75%)" }}/>
+            <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle, rgba(96,165,250,0.12) 1px, transparent 1px)", backgroundSize:"22px 22px", backgroundPosition:"11px 11px", maskImage:"radial-gradient(ellipse 60% 80% at 85% 40%, black 10%, transparent 65%)", WebkitMaskImage:"radial-gradient(ellipse 60% 80% at 85% 40%, black 10%, transparent 65%)" }}/>
+            <div style={{ position:"absolute", width:"420px", height:"320px", borderRadius:"50%", background:"radial-gradient(circle, rgba(74,222,128,0.12) 0%, transparent 70%)", top:"-60px", right:"5%", animation:"haloShift 14s ease-in-out infinite", filter:"blur(30px)" }}/>
+            <div style={{ position:"absolute", width:"300px", height:"260px", borderRadius:"50%", background:"radial-gradient(circle, rgba(96,165,250,0.10) 0%, transparent 70%)", bottom:"-40px", right:"20%", animation:"haloShift2 18s ease-in-out infinite", filter:"blur(25px)" }}/>
+          </div>
+          <div style={{ position:"absolute", left:"40px", right:"40px", height:"1px", bottom:"40px", background:"linear-gradient(90deg, transparent, rgba(74,222,128,0.15), transparent)", animation:"scanLine 6s ease-in-out infinite", zIndex:1 }}/>
+          <div style={{ position:"relative", zIndex:2 }}>
+            <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"5px", textTransform:"uppercase", marginBottom:"16px" }}>// Simulateur DCA · Investissement</div>
+            <h1 className="sim-header-title" style={{ fontFamily:"'DM Serif Display'", fontSize:"clamp(40px,6.5vw,68px)", fontWeight:400, lineHeight:1.05, color:"#eae6dc", margin:"0 0 16px 0", maxWidth:"600px" }}>
+              Ton capital<br/>
+              <span style={{ color:"#4ade80", fontStyle:"italic", background:"linear-gradient(90deg,#4ade80,#60a5fa,#4ade80)", backgroundSize:"200% 100%", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", animation:"gradShift 4s ease infinite" }}>dans {years} ans</span>
+            </h1>
+            <p style={{ fontFamily:"'Sora'", fontSize:"13px", color:"rgba(255,255,255,0.22)", fontWeight:300, letterSpacing:"0.3px" }}>Basé sur les données historiques · Rendements annualisés · Non garanti</p>
+          </div>
         </div>
 
         {/* Params */}
