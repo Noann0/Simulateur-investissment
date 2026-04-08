@@ -227,11 +227,23 @@ const CTooltip = ({ active, payload }) => {
 };
 
 export default function SimulateurDCA() {
-  const [monthly, setMonthly] = useState(200);
+  const [monthly, setMonthly] = useState(100);
+  const [initialCapital, setInitialCapital] = useState(0);
   const [years, setYears] = useState(12);
   const [scenario, setScenario] = useState("realiste");
-  const [actives, setActives] = useState({ msci_world: true, emerging: true, sp500: false, bitcoin: true, or: false });
-  const [allocs, setAllocs] = useState({ msci_world: 70, emerging: 20, sp500: 0, bitcoin: 10, or: 0 });
+  const [actives, setActives] = useState({
+    msci_world: true, sp500: false, emerging: false,
+    nasdaq: false, stoxx600: false, semiconductors: false, japan: false,
+    bitcoin: true, ethereum: false, solana: false,
+    or: false,
+  });
+  const [allocs, setAllocs] = useState({
+    msci_world: 90, sp500: 0, emerging: 0,
+    nasdaq: 0, stoxx600: 0, semiconductors: 0, japan: 0,
+    bitcoin: 10, ethereum: 0, solana: 0,
+    or: 0,
+  });
+  const [openCats, setOpenCats] = useState({ etfs: true, crypto: true, defensifs: true });
   const [showTable, setShowTable] = useState(false);
   const [anim, setAnim] = useState(0);
 
@@ -245,9 +257,9 @@ export default function SimulateurDCA() {
   const projs = useMemo(() => {
     if (total !== 100 || cnt === 0) return null;
     const r = {};
-    SCENARIOS.forEach(s => { r[s.key] = project(monthly, years, actives, allocs, s.key); });
+    SCENARIOS.forEach(s => { r[s.key] = project(monthly, years, actives, allocs, s.key, initialCapital); });
     return r;
-  }, [monthly, years, actives, allocs, total, cnt]);
+  }, [monthly, years, actives, allocs, total, cnt, initialCapital]);
 
   const chart = useMemo(() => {
     if (!projs) return [];
@@ -260,7 +272,7 @@ export default function SimulateurDCA() {
 
   const sel = projs?.[scenario];
   const finalV = sel?.[sel.length-1]?.value || 0;
-  const totalInv = monthly * years * 12;
+  const totalInv = initialCapital + monthly * years * 12;
   const gains = finalV - totalInv;
 
   useEffect(() => { setAnim(a=>a+1); }, [monthly, years, scenario, total]);
