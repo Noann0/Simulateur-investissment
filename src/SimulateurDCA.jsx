@@ -341,22 +341,73 @@ export default function SimulateurDCA() {
         </div>
 
         {/* Params */}
-        <div className="sim-params-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"16px", marginBottom:"32px", animation:"fadeUp 0.6s ease 0.1s both" }}>
-          {[{label:"Versement mensuel",val:monthly,set:setMonthly,min:50,max:2000,step:50,disp:`${monthly.toLocaleString("fr-FR")}`,unit:"€",pct:monthly/2000},
-            {label:"Durée d'investissement",val:years,set:setYears,min:1,max:40,step:1,disp:`${years}`,unit:"ans",pct:(years-1)/39}
-          ].map((p,i) => (
-            <div key={i} style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:"16px", padding:"24px 28px" }}>
-              <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"2px", textTransform:"uppercase", marginBottom:"12px" }}>{p.label}</div>
-              <div className="sim-param-value" style={{ fontFamily:"'Outfit'", fontSize:"40px", color:"#eae6dc", fontWeight:600, marginBottom:"16px", letterSpacing:"-1px" }}>
-                {p.disp} <span style={{ fontSize:"28px", color:"#4ade80", fontWeight:400 }}>{p.unit}</span>
-              </div>
-              <div style={{ position:"relative", height:"4px", background:"rgba(255,255,255,0.04)", borderRadius:"2px" }}>
-                <div style={{ position:"absolute", top:0, left:0, height:"100%", width:`${p.pct*100}%`, background:"linear-gradient(90deg,#4ade8050,#4ade80)", borderRadius:"2px", transition:"width 0.15s" }}/>
-                <input type="range" min={p.min} max={p.max} step={p.step} value={p.val} onChange={e=>p.set(Number(e.target.value))}
-                  style={{ position:"absolute", top:"-10px", left:0, width:"100%", height:"24px", WebkitAppearance:"none", background:"transparent", cursor:"pointer" }}/>
-              </div>
+        <div className="sim-params-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"16px", marginBottom:"32px", animation:"fadeUp 0.6s ease 0.1s both" }}>
+
+          {/* Capital initial */}
+          <div style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:"16px", padding:"24px 28px" }}>
+            <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"2px", textTransform:"uppercase", marginBottom:"12px" }}>Capital de départ</div>
+            <div className="sim-param-value" style={{ fontFamily:"'Outfit'", fontSize:"36px", color:"#eae6dc", fontWeight:600, marginBottom:"16px", letterSpacing:"-1px" }}>
+              {initialCapital.toLocaleString("fr-FR")} <span style={{ fontSize:"24px", color:"#4ade80", fontWeight:400 }}>€</span>
             </div>
-          ))}
+            <div style={{ display:"flex", gap:"6px", marginBottom:"12px", flexWrap:"wrap" }}>
+              {[-1000,-500,500,1000,5000].map(d => (
+                <button key={d} onClick={() => setInitialCapital(v => Math.max(0, v + d))} style={{
+                  fontFamily:"'JetBrains Mono'", fontSize:"11px", padding:"5px 10px", borderRadius:"7px",
+                  border:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.03)",
+                  color: d > 0 ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.3)", cursor:"pointer",
+                }}>{d > 0 ? `+${d}` : d}</button>
+              ))}
+            </div>
+            <input type="number" min={0} value={initialCapital} onChange={e => setInitialCapital(Math.max(0, Number(e.target.value) || 0))}
+              style={{ fontFamily:"'JetBrains Mono'", fontSize:"13px", color:"#eae6dc", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:"8px", padding:"7px 12px", width:"100%", outline:"none" }}/>
+          </div>
+
+          {/* Versement mensuel */}
+          <div style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:"16px", padding:"24px 28px" }}>
+            <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"2px", textTransform:"uppercase", marginBottom:"12px" }}>Versement mensuel</div>
+            <div className="sim-param-value" style={{ fontFamily:"'Outfit'", fontSize:"36px", color:"#eae6dc", fontWeight:600, marginBottom:"16px", letterSpacing:"-1px" }}>
+              {monthly.toLocaleString("fr-FR")} <span style={{ fontSize:"24px", color:"#4ade80", fontWeight:400 }}>€</span>
+            </div>
+            <div style={{ display:"flex", gap:"6px", marginBottom:"12px", flexWrap:"wrap" }}>
+              {[-50,-10,10,50].map(d => (
+                <button key={d} onClick={() => setMonthly(v => Math.max(0, v + d))} style={{
+                  fontFamily:"'JetBrains Mono'", fontSize:"11px", padding:"5px 10px", borderRadius:"7px",
+                  border:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.03)",
+                  color: d > 0 ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.3)", cursor:"pointer",
+                }}>{d > 0 ? `+${d}` : d}</button>
+              ))}
+            </div>
+            <div style={{ position:"relative", height:"4px", background:"rgba(255,255,255,0.04)", borderRadius:"2px", marginBottom:"10px" }}>
+              <div style={{ position:"absolute", top:0, left:0, height:"100%", width:`${(monthly/2000)*100}%`, background:"linear-gradient(90deg,#4ade8050,#4ade80)", borderRadius:"2px", transition:"width 0.15s" }}/>
+              <input type="range" min={0} max={2000} step={10} value={monthly} onChange={e => setMonthly(Number(e.target.value))}
+                style={{ position:"absolute", top:"-10px", left:0, width:"100%", height:"24px", WebkitAppearance:"none", appearance:"none", background:"transparent", cursor:"pointer" }}/>
+            </div>
+            <input type="number" min={0} value={monthly} onChange={e => setMonthly(Math.max(0, Number(e.target.value) || 0))}
+              style={{ fontFamily:"'JetBrains Mono'", fontSize:"13px", color:"#eae6dc", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:"8px", padding:"7px 12px", width:"100%", outline:"none" }}/>
+          </div>
+
+          {/* Durée */}
+          <div style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:"16px", padding:"24px 28px" }}>
+            <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"2px", textTransform:"uppercase", marginBottom:"12px" }}>Durée d'investissement</div>
+            <div className="sim-param-value" style={{ fontFamily:"'Outfit'", fontSize:"36px", color:"#eae6dc", fontWeight:600, marginBottom:"16px", letterSpacing:"-1px" }}>
+              {years} <span style={{ fontSize:"24px", color:"#4ade80", fontWeight:400 }}>ans</span>
+            </div>
+            <div style={{ display:"flex", gap:"6px", marginBottom:"12px", flexWrap:"wrap" }}>
+              {[-5,-1,1,5].map(d => (
+                <button key={d} onClick={() => setYears(v => Math.min(40, Math.max(1, v + d)))} style={{
+                  fontFamily:"'JetBrains Mono'", fontSize:"11px", padding:"5px 10px", borderRadius:"7px",
+                  border:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.03)",
+                  color: d > 0 ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.3)", cursor:"pointer",
+                }}>{d > 0 ? `+${d}` : d}</button>
+              ))}
+            </div>
+            <div style={{ position:"relative", height:"4px", background:"rgba(255,255,255,0.04)", borderRadius:"2px" }}>
+              <div style={{ position:"absolute", top:0, left:0, height:"100%", width:`${((years-1)/39)*100}%`, background:"linear-gradient(90deg,#4ade8050,#4ade80)", borderRadius:"2px", transition:"width 0.15s" }}/>
+              <input type="range" min={1} max={40} step={1} value={years} onChange={e => setYears(Number(e.target.value))}
+                style={{ position:"absolute", top:"-10px", left:0, width:"100%", height:"24px", WebkitAppearance:"none", appearance:"none", background:"transparent", cursor:"pointer" }}/>
+            </div>
+          </div>
+
         </div>
 
         {/* Assets — Accordéon catégorisé */}
