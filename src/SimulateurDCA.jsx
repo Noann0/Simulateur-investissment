@@ -135,22 +135,29 @@ const SCENARIOS = [
 const fmt = (v) => Math.round(v).toLocaleString("fr-FR") + " €";
 const fmtK = (v) => { if (v >= 1e6) return `${(v/1e6).toFixed(1)}M`; if (v >= 1e3) return `${(v/1e3).toFixed(0)}k`; return Math.round(v).toString(); };
 
-function project(monthly, years, activeAssets, allocations, scenarioKey) {
+function project(monthly, years, activeAssets, allocations, scenarioKey, initialCapital = 0) {
   const months = years * 12;
   const data = [];
-  let bal = 0;
+  let bal = initialCapital;
   for (let m = 0; m <= months; m++) {
     if (m > 0) {
       let wr = 0;
       Object.entries(activeAssets).forEach(([k, on]) => {
         if (!on) return;
         const pct = (allocations[k] || 0) / 100;
-        const ar = ASSETS[k][scenarioKey] / 100;
+        const baseRate = ASSETS[k][scenarioKey] / 100;
+        const stakingRate = (ASSETS[k].staking || 0) / 100;
+        const ar = baseRate + stakingRate;
         wr += pct * (Math.pow(1 + ar, 1/12) - 1);
       });
       bal = bal * (1 + wr) + monthly;
     }
-    if (m % 12 === 0) data.push({ year: m/12, label: `Année ${m/12}`, invested: monthly * m, value: bal });
+    if (m % 12 === 0) data.push({
+      year: m / 12,
+      label: `Année ${m / 12}`,
+      invested: initialCapital + monthly * m,
+      value: bal,
+    });
   }
   return data;
 }
