@@ -359,11 +359,47 @@ export default function SimulateurDCA() {
           ))}
         </div>
 
-        {/* Assets */}
+        {/* Assets — Accordéon catégorisé */}
         <div style={{ marginBottom:"24px", animation:"fadeUp 0.6s ease 0.15s both" }}>
           <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"2px", textTransform:"uppercase", marginBottom:"14px" }}>Mes actifs</div>
-          <div className="sim-chip-row" style={{ display:"flex", flexWrap:"wrap", gap:"10px" }}>
-            {Object.entries(ASSETS).map(([k,a]) => <Chip key={k} active={actives[k]} label={a.label} icon={a.icon} color={a.color} onClick={()=>toggle(k)}/>)}
+          <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
+            {CATEGORIES.map(cat => (
+              <div key={cat.key} style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:"14px", overflow:"hidden" }}>
+                <button onClick={() => setOpenCats(p => ({...p, [cat.key]: !p[cat.key]}))} style={{
+                  display:"flex", alignItems:"center", gap:"10px", width:"100%", padding:"14px 18px",
+                  background:"transparent", border:"none", cursor:"pointer", transition:"background 0.2s",
+                }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                >
+                  <span style={{ fontSize:"14px" }}>{cat.icon}</span>
+                  <span style={{ fontFamily:"'Sora'", fontSize:"11px", fontWeight:500, color:"rgba(255,255,255,0.45)", letterSpacing:"1px", textTransform:"uppercase", flex:1, textAlign:"left" }}>{cat.label}</span>
+                  <span style={{ fontFamily:"'Sora'", fontSize:"14px", color:"rgba(255,255,255,0.2)", transform: openCats[cat.key] ? "rotate(180deg)" : "rotate(0)", transition:"transform 0.25s" }}>▾</span>
+                </button>
+                {openCats[cat.key] && (
+                  <div className="sim-chip-row" style={{ display:"flex", flexWrap:"wrap", gap:"8px", padding:"4px 14px 14px" }}>
+                    {cat.assets.map(k => {
+                      const a = ASSETS[k];
+                      return (
+                        <div key={k} style={{ position:"relative" }}>
+                          <Chip active={actives[k]} label={a.label} icon={a.icon} color={a.color} onClick={() => toggle(k)} />
+                          {a.staking && actives[k] && (
+                            <div style={{
+                              position:"absolute", top:"-7px", right:"-4px",
+                              fontFamily:"'JetBrains Mono'", fontSize:"8px", fontWeight:700,
+                              color:"#0b0b0f", background: a.color,
+                              padding:"2px 5px", borderRadius:"4px", letterSpacing:"0.5px", lineHeight:1,
+                            }}>
+                              STAKING {a.staking}%
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
