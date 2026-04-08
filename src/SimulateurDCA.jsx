@@ -6,52 +6,124 @@ const FONTS_CSS = `
 `;
 
 const ASSETS = {
+  // ETFs Actions
   msci_world: {
     label: "MSCI World", short: "World", icon: "🌍", color: "#4ade80",
     pessimiste: 5, realiste: 8, optimiste: 10.5, bullrun: 12,
     description: "1 600+ entreprises · 23 pays développés",
+    staking: null,
     etfs: [
       { name: "Amundi MSCI World", ticker: "CW8", fee: "0,12%", note: "Le plus populaire en France · Réplication physique" },
       { name: "iShares Core MSCI World", ticker: "IWDA", fee: "0,20%", note: "Très liquide · 1600+ entreprises · BlackRock" },
       { name: "Lyxor MSCI World", ticker: "LCWD", fee: "0,12%", note: "Alternative française · Bonne liquidité" },
     ],
   },
-  emerging: {
-    label: "Emerging Markets", short: "EM", icon: "🌏", color: "#f59e0b",
-    pessimiste: 3, realiste: 7, optimiste: 11, bullrun: 14,
-    description: "Inde, Chine, Brésil · Croissance future",
-    etfs: [
-      { name: "iShares Core MSCI EM IMI", ticker: "EIMI", fee: "0,18%", note: "Large + mid + small caps · Très diversifié" },
-      { name: "Amundi MSCI Emerging Markets", ticker: "AEEM", fee: "0,20%", note: "Éligible PEA · Synthétique" },
-    ],
-  },
   sp500: {
     label: "S&P 500", short: "S&P", icon: "🇺🇸", color: "#60a5fa",
     pessimiste: 6, realiste: 9.5, optimiste: 11, bullrun: 13,
     description: "500 plus grandes entreprises US",
+    staking: null,
     etfs: [
       { name: "Amundi S&P 500", ticker: "500", fee: "0,15%", note: "Éligible PEA · Très populaire" },
       { name: "iShares Core S&P 500", ticker: "CSPX", fee: "0,07%", note: "Frais les plus bas · Capitalisant" },
     ],
   },
+  emerging: {
+    label: "Emerging Markets", short: "EM", icon: "🌏", color: "#f59e0b",
+    pessimiste: 3, realiste: 7, optimiste: 11, bullrun: 14,
+    description: "Inde, Chine, Brésil · Croissance future",
+    staking: null,
+    etfs: [
+      { name: "iShares Core MSCI EM IMI", ticker: "EIMI", fee: "0,18%", note: "Large + mid + small caps · Très diversifié" },
+      { name: "Amundi MSCI Emerging Markets", ticker: "AEEM", fee: "0,20%", note: "Éligible PEA · Synthétique" },
+    ],
+  },
+  nasdaq: {
+    label: "NASDAQ 100", short: "QQQ", icon: "💻", color: "#a78bfa",
+    pessimiste: 7, realiste: 12, optimiste: 16, bullrun: 20,
+    description: "100 plus grandes tech US · Apple, NVIDIA, Meta",
+    staking: null,
+    etfs: [
+      { name: "Amundi NASDAQ-100", ticker: "ANX", fee: "0,22%", note: "Éligible PEA · Réplication synthétique" },
+      { name: "iShares NASDAQ 100", ticker: "CNDX", fee: "0,33%", note: "Réplication physique · Très liquide" },
+    ],
+  },
+  stoxx600: {
+    label: "Europe Stoxx 600", short: "EU600", icon: "🇪🇺", color: "#38bdf8",
+    pessimiste: 4, realiste: 7, optimiste: 9, bullrun: 11,
+    description: "600 entreprises européennes · Dividendes élevés",
+    staking: null,
+    etfs: [
+      { name: "iShares STOXX Europe 600", ticker: "EXSA", fee: "0,20%", note: "Très diversifié · 17 pays européens" },
+      { name: "Amundi STOXX Europe 600", ticker: "CS6", fee: "0,07%", note: "Frais très bas · Capitalisant" },
+    ],
+  },
+  semiconductors: {
+    label: "Semiconducteurs", short: "SEMI", icon: "⚡", color: "#fb923c",
+    pessimiste: 8, realiste: 14, optimiste: 20, bullrun: 28,
+    description: "NVIDIA, TSMC, ASML · Secteur le plus performant",
+    staking: null,
+    etfs: [
+      { name: "VanEck Semiconductor ETF", ticker: "SMH", fee: "0,35%", note: "35 leaders mondiaux des semi-conducteurs" },
+      { name: "iShares Semiconductor ETF", ticker: "SOXX", fee: "0,35%", note: "30 entreprises US · NVIDIA, Intel, Qualcomm" },
+    ],
+  },
+  japan: {
+    label: "MSCI Japan", short: "JPN", icon: "🗾", color: "#f472b6",
+    pessimiste: 3, realiste: 6, optimiste: 8.5, bullrun: 11,
+    description: "Toyota, Sony, SoftBank · 2e marché développé",
+    staking: null,
+    etfs: [
+      { name: "iShares MSCI Japan", ticker: "IJPA", fee: "0,12%", note: "Large + mid caps · 240+ entreprises" },
+      { name: "Amundi MSCI Japan", ticker: "CJ1", fee: "0,12%", note: "Éligible PEA · Synthétique" },
+    ],
+  },
+  // Crypto
   bitcoin: {
     label: "Bitcoin", short: "BTC", icon: "₿", color: "#f97316",
     pessimiste: -5, realiste: 15, optimiste: 30, bullrun: 50,
     description: "Crypto · Haute volatilité · Max 10% recommandé",
+    staking: null,
     etfs: [
-      { name: "Achat direct", ticker: "BTC", fee: "~1%", note: "Via Trade Republic · Spread variable" },
+      { name: "Bitcoin", ticker: "BTC", fee: "~1%", note: "Via Trade Republic · Achat direct" },
     ],
   },
+  ethereum: {
+    label: "Ethereum", short: "ETH", icon: "Ξ", color: "#818cf8",
+    pessimiste: -8, realiste: 18, optimiste: 35, bullrun: 60,
+    description: "Smart contracts · Staking 2.52% sur Trade Republic",
+    staking: 2.52,
+    etfs: [
+      { name: "Ethereum", ticker: "ETH", fee: "~1%", note: "Via Trade Republic · Staking 2.52%/an inclus" },
+    ],
+  },
+  solana: {
+    label: "Solana", short: "SOL", icon: "◎", color: "#34d399",
+    pessimiste: -10, realiste: 20, optimiste: 45, bullrun: 80,
+    description: "Haute performance · Staking 5.42% sur Trade Republic",
+    staking: 5.42,
+    etfs: [
+      { name: "Solana", ticker: "SOL", fee: "~1%", note: "Via Trade Republic · Staking 5.42%/an inclus" },
+    ],
+  },
+  // Défensifs
   or: {
     label: "Or", short: "Gold", icon: "🥇", color: "#d4a24e",
     pessimiste: 1, realiste: 4, optimiste: 7, bullrun: 9,
     description: "Valeur refuge · Couverture inflation",
+    staking: null,
     etfs: [
       { name: "Amundi Physical Gold", ticker: "GOLD", fee: "0,15%", note: "Or physique · ETC" },
       { name: "iShares Physical Gold", ticker: "IGLN", fee: "0,12%", note: "Adossé à de l'or physique · Très liquide" },
     ],
   },
 };
+
+const CATEGORIES = [
+  { key: "etfs", label: "ETFs Actions", icon: "📈", assets: ["msci_world","sp500","emerging","nasdaq","stoxx600","semiconductors","japan"] },
+  { key: "crypto", label: "Crypto", icon: "₿", assets: ["bitcoin","ethereum","solana"] },
+  { key: "defensifs", label: "Défensifs", icon: "🏦", assets: ["or"] },
+];
 
 const SCENARIOS = [
   { key: "pessimiste", label: "Pessimiste", pct: "5%", color: "#ef4444" },
@@ -63,22 +135,29 @@ const SCENARIOS = [
 const fmt = (v) => Math.round(v).toLocaleString("fr-FR") + " €";
 const fmtK = (v) => { if (v >= 1e6) return `${(v/1e6).toFixed(1)}M`; if (v >= 1e3) return `${(v/1e3).toFixed(0)}k`; return Math.round(v).toString(); };
 
-function project(monthly, years, activeAssets, allocations, scenarioKey) {
+function project(monthly, years, activeAssets, allocations, scenarioKey, initialCapital = 0) {
   const months = years * 12;
   const data = [];
-  let bal = 0;
+  let bal = initialCapital;
   for (let m = 0; m <= months; m++) {
     if (m > 0) {
       let wr = 0;
       Object.entries(activeAssets).forEach(([k, on]) => {
         if (!on) return;
         const pct = (allocations[k] || 0) / 100;
-        const ar = ASSETS[k][scenarioKey] / 100;
+        const baseRate = ASSETS[k][scenarioKey] / 100;
+        const stakingRate = (ASSETS[k].staking || 0) / 100;
+        const ar = baseRate + stakingRate;
         wr += pct * (Math.pow(1 + ar, 1/12) - 1);
       });
       bal = bal * (1 + wr) + monthly;
     }
-    if (m % 12 === 0) data.push({ year: m/12, label: `Année ${m/12}`, invested: monthly * m, value: bal });
+    if (m % 12 === 0) data.push({
+      year: m / 12,
+      label: `Année ${m / 12}`,
+      invested: initialCapital + monthly * m,
+      value: bal,
+    });
   }
   return data;
 }
@@ -148,11 +227,23 @@ const CTooltip = ({ active, payload }) => {
 };
 
 export default function SimulateurDCA() {
-  const [monthly, setMonthly] = useState(200);
+  const [monthly, setMonthly] = useState(100);
+  const [initialCapital, setInitialCapital] = useState(0);
   const [years, setYears] = useState(12);
   const [scenario, setScenario] = useState("realiste");
-  const [actives, setActives] = useState({ msci_world: true, emerging: true, sp500: false, bitcoin: true, or: false });
-  const [allocs, setAllocs] = useState({ msci_world: 70, emerging: 20, sp500: 0, bitcoin: 10, or: 0 });
+  const [actives, setActives] = useState({
+    msci_world: true, sp500: false, emerging: false,
+    nasdaq: false, stoxx600: false, semiconductors: false, japan: false,
+    bitcoin: true, ethereum: false, solana: false,
+    or: false,
+  });
+  const [allocs, setAllocs] = useState({
+    msci_world: 90, sp500: 0, emerging: 0,
+    nasdaq: 0, stoxx600: 0, semiconductors: 0, japan: 0,
+    bitcoin: 10, ethereum: 0, solana: 0,
+    or: 0,
+  });
+  const [openCats, setOpenCats] = useState({ etfs: true, crypto: true, defensifs: true });
   const [showTable, setShowTable] = useState(false);
   const [anim, setAnim] = useState(0);
 
@@ -166,9 +257,9 @@ export default function SimulateurDCA() {
   const projs = useMemo(() => {
     if (total !== 100 || cnt === 0) return null;
     const r = {};
-    SCENARIOS.forEach(s => { r[s.key] = project(monthly, years, actives, allocs, s.key); });
+    SCENARIOS.forEach(s => { r[s.key] = project(monthly, years, actives, allocs, s.key, initialCapital); });
     return r;
-  }, [monthly, years, actives, allocs, total, cnt]);
+  }, [monthly, years, actives, allocs, total, cnt, initialCapital]);
 
   const chart = useMemo(() => {
     if (!projs) return [];
@@ -181,7 +272,7 @@ export default function SimulateurDCA() {
 
   const sel = projs?.[scenario];
   const finalV = sel?.[sel.length-1]?.value || 0;
-  const totalInv = monthly * years * 12;
+  const totalInv = initialCapital + monthly * years * 12;
   const gains = finalV - totalInv;
 
   useEffect(() => { setAnim(a=>a+1); }, [monthly, years, scenario, total]);
@@ -189,12 +280,111 @@ export default function SimulateurDCA() {
   const etfs = useMemo(() =>
     Object.entries(actives).filter(([,v])=>v).flatMap(([k]) => ASSETS[k].etfs.map(e=>({...e, asset: ASSETS[k].label, color: ASSETS[k].color}))), [actives]);
 
+  const generateExportHTML = () => {
+    const date = new Date().toLocaleDateString("fr-FR", { year:"numeric", month:"long", day:"numeric" });
+    const activeList = Object.entries(actives).filter(([,v])=>v).map(([k]) => ({
+      key: k, label: ASSETS[k].label, icon: ASSETS[k].icon, alloc: allocs[k],
+      staking: ASSETS[k].staking,
+    }));
+    const rows = (projs?.[scenario] || []).filter(d => d.year > 0).map(d => `
+      <tr>
+        <td>Année ${d.year}</td>
+        <td>${Math.round(d.invested).toLocaleString("fr-FR")} €</td>
+        <td>${Math.round(projs.pessimiste.find(x=>x.year===d.year)?.value ?? 0).toLocaleString("fr-FR")} €</td>
+        <td>${Math.round(d.value).toLocaleString("fr-FR")} €</td>
+        <td>${Math.round(projs.optimiste.find(x=>x.year===d.year)?.value ?? 0).toLocaleString("fr-FR")} €</td>
+      </tr>`).join("");
+
+    const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mon Plan d'Investissement DCA</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family: 'Segoe UI', sans-serif; background:#0b0b0f; color:#eae6dc; padding:40px 32px; max-width:900px; margin:0 auto; }
+  @media print { body { background:#fff; color:#111; } .no-print { display:none; } }
+  h1 { font-size:36px; font-weight:300; margin-bottom:6px; color:#4ade80; }
+  .meta { font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:40px; }
+  .section-title { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:12px; margin-top:32px; }
+  .params-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
+  @media(max-width:600px) { .params-grid { grid-template-columns:1fr; } }
+  .param-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:20px; }
+  .param-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:8px; }
+  .param-value { font-size:28px; font-weight:600; color:#eae6dc; }
+  .param-unit { font-size:18px; color:#4ade80; font-weight:400; }
+  .alloc-row { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .alloc-bar { flex:1; height:4px; background:rgba(255,255,255,0.04); border-radius:2px; overflow:hidden; }
+  .alloc-fill { height:100%; border-radius:2px; }
+  table { width:100%; border-collapse:collapse; margin-top:8px; }
+  th { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.25); text-align:right; padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.06); }
+  th:first-child { text-align:left; }
+  td { font-size:12px; font-family:monospace; text-align:right; padding:10px 16px; border-bottom:1px solid rgba(255,255,255,0.03); }
+  td:first-child { text-align:left; color:rgba(255,255,255,0.4); }
+  tr:hover td { background:rgba(74,222,128,0.03); }
+  .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:32px; }
+  @media(max-width:600px) { .stats-grid { grid-template-columns:1fr; } }
+  .stat-card { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:18px; text-align:center; }
+  .stat-label { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:8px; }
+  .stat-value { font-size:24px; font-weight:600; }
+  .footer { margin-top:40px; font-size:10px; color:rgba(255,255,255,0.15); text-align:center; line-height:1.8; }
+  .print-btn { margin-top:24px; padding:12px 24px; background:#4ade80; color:#0b0b0f; border:none; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; }
+</style>
+</head>
+<body>
+  <h1>Mon Plan DCA</h1>
+  <div class="meta">Généré le ${date} · Scénario : ${scenario.charAt(0).toUpperCase()+scenario.slice(1)}</div>
+  <div class="section-title">Paramètres</div>
+  <div class="params-grid">
+    <div class="param-card"><div class="param-label">Capital de départ</div><div class="param-value">${initialCapital.toLocaleString("fr-FR")} <span class="param-unit">€</span></div></div>
+    <div class="param-card"><div class="param-label">Versement mensuel</div><div class="param-value">${monthly.toLocaleString("fr-FR")} <span class="param-unit">€/mois</span></div></div>
+    <div class="param-card"><div class="param-label">Durée</div><div class="param-value">${years} <span class="param-unit">ans</span></div></div>
+  </div>
+  <div class="section-title">Allocation</div>
+  ${activeList.map(a => `
+  <div class="alloc-row">
+    <span style="font-size:16px">${a.icon}</span>
+    <span style="font-size:13px;min-width:160px">${a.label}${a.staking ? ` <span style="font-size:10px;color:#4ade80">(staking +${a.staking}%)</span>` : ""}</span>
+    <div class="alloc-bar"><div class="alloc-fill" style="width:${a.alloc}%;background:#4ade80"></div></div>
+    <span style="font-size:14px;font-family:monospace;min-width:44px;text-align:right">${a.alloc}%</span>
+  </div>`).join("")}
+  <div class="section-title" style="margin-top:32px">Résultats estimés</div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">Capital investi</div><div class="stat-value" style="color:#eae6dc">${Math.round(totalInv).toLocaleString("fr-FR")} €</div></div>
+    <div class="stat-card"><div class="stat-label">Valeur finale (${scenario})</div><div class="stat-value" style="color:#4ade80">${Math.round(finalV).toLocaleString("fr-FR")} €</div></div>
+    <div class="stat-card"><div class="stat-label">Gains générés</div><div class="stat-value" style="color:${gains>=0?"#4ade80":"#ef4444"}">${gains>=0?"+":""}${Math.round(gains).toLocaleString("fr-FR")} €</div></div>
+  </div>
+  <div class="section-title">Projection année par année</div>
+  <table>
+    <thead><tr><th>Année</th><th>Investi</th><th>Pessimiste</th><th>Réaliste</th><th>Optimiste</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="footer">Rendements passés ne préjugent pas des rendements futurs · Simulation indicative · Pas de frais ni fiscalité inclus<br/>Généré avec Simulateur DCA</div>
+  <div class="no-print" style="text-align:center;margin-top:32px">
+    <button class="print-btn" onclick="window.print()">Imprimer / Sauvegarder en PDF</button>
+  </div>
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type:"text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `plan-dca-${new Date().toISOString().slice(0,10)}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "#0b0b0f", color: "#eae6dc", fontFamily: "'Sora', sans-serif" }}>
       <style>{FONTS_CSS}{`
         @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
         @keyframes countUp { from { opacity:0; filter:blur(8px); } to { opacity:1; filter:blur(0); } }
         @keyframes dotPulse { 0%,100% { opacity:0.03; } 50% { opacity:0.06; } }
+        @keyframes haloShift { 0% { transform: translate(0,0) scale(1); } 33% { transform: translate(30px,-20px) scale(1.05); } 66% { transform: translate(-20px,15px) scale(0.97); } 100% { transform: translate(0,0) scale(1); } }
+        @keyframes haloShift2 { 0% { transform: translate(0,0) scale(1); } 33% { transform: translate(-25px,20px) scale(1.03); } 66% { transform: translate(20px,-10px) scale(0.98); } 100% { transform: translate(0,0) scale(1); } }
+        @keyframes scanLine { 0% { opacity:0; transform:translateY(-10px); } 40% { opacity:1; } 100% { opacity:0; transform:translateY(4px); } }
         @keyframes gradShift { 0% { background-position:0% 50%; } 50% { background-position:100% 50%; } 100% { background-position:0% 50%; } }
         input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:#eae6dc; border:2px solid #0b0b0f; cursor:pointer; box-shadow:0 0 12px rgba(234,230,220,0.2); transition:all 0.2s; }
         input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.25); box-shadow:0 0 20px rgba(234,230,220,0.4); }
@@ -203,12 +393,15 @@ export default function SimulateurDCA() {
         ::-webkit-scrollbar { width:3px; }
         ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.08); border-radius:2px; }
 
+        @media (max-width: 900px) {
+          .sim-params-grid { grid-template-columns: 1fr 1fr !important; }
+        }
         @media (max-width: 768px) {
           .sim-params-grid { grid-template-columns: 1fr !important; }
           .sim-stats-grid { grid-template-columns: 1fr !important; }
           .sim-container { padding: 28px 16px 48px !important; }
           .sim-header-title { font-size: 32px !important; }
-          .sim-param-value { font-size: 32px !important; }
+          .sim-param-value { font-size: 28px !important; }
           .sim-stat-value { font-size: 24px !important; }
           .sim-chart-box { padding: 16px !important; }
           .sim-chart-legend { display: none !important; }
@@ -223,14 +416,12 @@ export default function SimulateurDCA() {
           .sim-chip-row { gap: 6px !important; }
           .sim-chip-row button { padding: 8px 10px !important; font-size: 11px !important; }
         }
-
         @media (max-width: 480px) {
           .sim-header-title { font-size: 26px !important; }
-          .sim-param-value { font-size: 28px !important; }
+          .sim-param-value { font-size: 24px !important; }
           .sim-stat-value { font-size: 20px !important; }
           .sim-stats-grid { gap: 8px !important; }
           .sim-chip-row button { padding: 7px 8px !important; font-size: 10px !important; }
-          .sim-chip-row button span:last-child { display: none !important; }
           .sim-table-grid { grid-template-columns: 44px 1fr 1fr 1fr 1fr !important; padding: 8px 8px !important; }
         }
       `}</style>
@@ -240,39 +431,139 @@ export default function SimulateurDCA() {
       <div className="sim-container" style={{ position:"relative", zIndex:1, maxWidth:"960px", margin:"0 auto", padding:"48px 32px 64px" }}>
 
         {/* Header */}
-        <div style={{ marginBottom:"48px", animation:"fadeUp 0.6s ease both" }}>
-          <div style={{ fontFamily:"'Sora'", fontSize:"11px", color:"rgba(255,255,255,0.25)", letterSpacing:"4px", textTransform:"uppercase", marginBottom:"12px" }}>// Simulateur DCA</div>
-          <h1 className="sim-header-title" style={{ fontFamily:"'DM Serif Display'", fontSize:"clamp(36px,6vw,56px)", fontWeight:400, lineHeight:1.1, color:"#eae6dc", margin:0 }}>
-            Ton capital dans{" "}
-            <span style={{ color:"#4ade80", fontStyle:"italic", background:"linear-gradient(90deg,#4ade80,#60a5fa,#4ade80)", backgroundSize:"200% 100%", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", animation:"gradShift 4s ease infinite" }}>{years} ans</span>
-          </h1>
-          <p style={{ fontFamily:"'Sora'", fontSize:"14px", color:"rgba(255,255,255,0.25)", marginTop:"10px", fontWeight:300 }}>Basé sur les données historiques · Rendements annualisés</p>
+        <div style={{ marginBottom:"48px", animation:"fadeUp 0.6s ease both", position:"relative", overflow:"hidden", borderRadius:"20px", padding:"48px 40px 52px", minHeight:"220px" }}>
+          {/* Fond halftone */}
+          <div style={{
+            position:"absolute", inset:0, zIndex:0, overflow:"hidden", borderRadius:"20px",
+            background:"rgba(255,255,255,0.01)", border:"1px solid rgba(255,255,255,0.04)",
+          }}>
+            <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle, rgba(74,222,128,0.18) 1px, transparent 1px)", backgroundSize:"22px 22px", maskImage:"radial-gradient(ellipse 80% 90% at 75% 50%, black 20%, transparent 75%)", WebkitMaskImage:"radial-gradient(ellipse 80% 90% at 75% 50%, black 20%, transparent 75%)" }}/>
+            <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle, rgba(96,165,250,0.12) 1px, transparent 1px)", backgroundSize:"22px 22px", backgroundPosition:"11px 11px", maskImage:"radial-gradient(ellipse 60% 80% at 85% 40%, black 10%, transparent 65%)", WebkitMaskImage:"radial-gradient(ellipse 60% 80% at 85% 40%, black 10%, transparent 65%)" }}/>
+            <div style={{ position:"absolute", width:"420px", height:"320px", borderRadius:"50%", background:"radial-gradient(circle, rgba(74,222,128,0.12) 0%, transparent 70%)", top:"-60px", right:"5%", animation:"haloShift 14s ease-in-out infinite", filter:"blur(30px)" }}/>
+            <div style={{ position:"absolute", width:"300px", height:"260px", borderRadius:"50%", background:"radial-gradient(circle, rgba(96,165,250,0.10) 0%, transparent 70%)", bottom:"-40px", right:"20%", animation:"haloShift2 18s ease-in-out infinite", filter:"blur(25px)" }}/>
+          </div>
+          <div style={{ position:"absolute", left:"40px", right:"40px", height:"1px", bottom:"40px", background:"linear-gradient(90deg, transparent, rgba(74,222,128,0.15), transparent)", animation:"scanLine 6s ease-in-out infinite", zIndex:1 }}/>
+          <div style={{ position:"relative", zIndex:2 }}>
+            <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"5px", textTransform:"uppercase", marginBottom:"16px" }}>// Simulateur DCA · Investissement</div>
+            <h1 className="sim-header-title" style={{ fontFamily:"'DM Serif Display'", fontSize:"clamp(40px,6.5vw,68px)", fontWeight:400, lineHeight:1.05, color:"#eae6dc", margin:"0 0 16px 0", maxWidth:"600px" }}>
+              Ton capital<br/>
+              <span style={{ color:"#4ade80", fontStyle:"italic", background:"linear-gradient(90deg,#4ade80,#60a5fa,#4ade80)", backgroundSize:"200% 100%", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", animation:"gradShift 4s ease infinite" }}>dans {years} ans</span>
+            </h1>
+            <p style={{ fontFamily:"'Sora'", fontSize:"13px", color:"rgba(255,255,255,0.22)", fontWeight:300, letterSpacing:"0.3px" }}>Basé sur les données historiques · Rendements annualisés · Non garanti</p>
+          </div>
         </div>
 
         {/* Params */}
-        <div className="sim-params-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"16px", marginBottom:"32px", animation:"fadeUp 0.6s ease 0.1s both" }}>
-          {[{label:"Versement mensuel",val:monthly,set:setMonthly,min:50,max:2000,step:50,disp:`${monthly.toLocaleString("fr-FR")}`,unit:"€",pct:monthly/2000},
-            {label:"Durée d'investissement",val:years,set:setYears,min:1,max:40,step:1,disp:`${years}`,unit:"ans",pct:(years-1)/39}
-          ].map((p,i) => (
-            <div key={i} style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:"16px", padding:"24px 28px" }}>
-              <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"2px", textTransform:"uppercase", marginBottom:"12px" }}>{p.label}</div>
-              <div className="sim-param-value" style={{ fontFamily:"'Outfit'", fontSize:"40px", color:"#eae6dc", fontWeight:600, marginBottom:"16px", letterSpacing:"-1px" }}>
-                {p.disp} <span style={{ fontSize:"28px", color:"#4ade80", fontWeight:400 }}>{p.unit}</span>
-              </div>
-              <div style={{ position:"relative", height:"4px", background:"rgba(255,255,255,0.04)", borderRadius:"2px" }}>
-                <div style={{ position:"absolute", top:0, left:0, height:"100%", width:`${p.pct*100}%`, background:"linear-gradient(90deg,#4ade8050,#4ade80)", borderRadius:"2px", transition:"width 0.15s" }}/>
-                <input type="range" min={p.min} max={p.max} step={p.step} value={p.val} onChange={e=>p.set(Number(e.target.value))}
-                  style={{ position:"absolute", top:"-10px", left:0, width:"100%", height:"24px", WebkitAppearance:"none", background:"transparent", cursor:"pointer" }}/>
-              </div>
+        <div className="sim-params-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"16px", marginBottom:"32px", animation:"fadeUp 0.6s ease 0.1s both" }}>
+
+          {/* Capital initial */}
+          <div style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:"16px", padding:"24px 28px" }}>
+            <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"2px", textTransform:"uppercase", marginBottom:"12px" }}>Capital de départ</div>
+            <div className="sim-param-value" style={{ fontFamily:"'Outfit'", fontSize:"36px", color:"#eae6dc", fontWeight:600, marginBottom:"16px", letterSpacing:"-1px" }}>
+              {initialCapital.toLocaleString("fr-FR")} <span style={{ fontSize:"24px", color:"#4ade80", fontWeight:400 }}>€</span>
             </div>
-          ))}
+            <div style={{ display:"flex", gap:"6px", marginBottom:"12px", flexWrap:"wrap" }}>
+              {[-1000,-500,500,1000,5000].map(d => (
+                <button key={d} onClick={() => setInitialCapital(v => Math.max(0, v + d))} style={{
+                  fontFamily:"'JetBrains Mono'", fontSize:"11px", padding:"5px 10px", borderRadius:"7px",
+                  border:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.03)",
+                  color: d > 0 ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.3)", cursor:"pointer",
+                }}>{d > 0 ? `+${d}` : d}</button>
+              ))}
+            </div>
+            <input type="number" min={0} value={initialCapital} onChange={e => setInitialCapital(Math.max(0, Number(e.target.value) || 0))}
+              style={{ fontFamily:"'JetBrains Mono'", fontSize:"13px", color:"#eae6dc", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:"8px", padding:"7px 12px", width:"100%", outline:"none" }}/>
+          </div>
+
+          {/* Versement mensuel */}
+          <div style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:"16px", padding:"24px 28px" }}>
+            <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"2px", textTransform:"uppercase", marginBottom:"12px" }}>Versement mensuel</div>
+            <div className="sim-param-value" style={{ fontFamily:"'Outfit'", fontSize:"36px", color:"#eae6dc", fontWeight:600, marginBottom:"16px", letterSpacing:"-1px" }}>
+              {monthly.toLocaleString("fr-FR")} <span style={{ fontSize:"24px", color:"#4ade80", fontWeight:400 }}>€</span>
+            </div>
+            <div style={{ display:"flex", gap:"6px", marginBottom:"12px", flexWrap:"wrap" }}>
+              {[-50,-10,10,50].map(d => (
+                <button key={d} onClick={() => setMonthly(v => Math.max(0, v + d))} style={{
+                  fontFamily:"'JetBrains Mono'", fontSize:"11px", padding:"5px 10px", borderRadius:"7px",
+                  border:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.03)",
+                  color: d > 0 ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.3)", cursor:"pointer",
+                }}>{d > 0 ? `+${d}` : d}</button>
+              ))}
+            </div>
+            <div style={{ position:"relative", height:"4px", background:"rgba(255,255,255,0.04)", borderRadius:"2px", marginBottom:"10px" }}>
+              <div style={{ position:"absolute", top:0, left:0, height:"100%", width:`${(monthly/2000)*100}%`, background:"linear-gradient(90deg,#4ade8050,#4ade80)", borderRadius:"2px", transition:"width 0.15s" }}/>
+              <input type="range" min={0} max={2000} step={10} value={monthly} onChange={e => setMonthly(Number(e.target.value))}
+                style={{ position:"absolute", top:"-10px", left:0, width:"100%", height:"24px", WebkitAppearance:"none", appearance:"none", background:"transparent", cursor:"pointer" }}/>
+            </div>
+            <input type="number" min={0} value={monthly} onChange={e => setMonthly(Math.max(0, Number(e.target.value) || 0))}
+              style={{ fontFamily:"'JetBrains Mono'", fontSize:"13px", color:"#eae6dc", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:"8px", padding:"7px 12px", width:"100%", outline:"none" }}/>
+          </div>
+
+          {/* Durée */}
+          <div style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:"16px", padding:"24px 28px" }}>
+            <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"2px", textTransform:"uppercase", marginBottom:"12px" }}>Durée d'investissement</div>
+            <div className="sim-param-value" style={{ fontFamily:"'Outfit'", fontSize:"36px", color:"#eae6dc", fontWeight:600, marginBottom:"16px", letterSpacing:"-1px" }}>
+              {years} <span style={{ fontSize:"24px", color:"#4ade80", fontWeight:400 }}>ans</span>
+            </div>
+            <div style={{ display:"flex", gap:"6px", marginBottom:"12px", flexWrap:"wrap" }}>
+              {[-5,-1,1,5].map(d => (
+                <button key={d} onClick={() => setYears(v => Math.min(40, Math.max(1, v + d)))} style={{
+                  fontFamily:"'JetBrains Mono'", fontSize:"11px", padding:"5px 10px", borderRadius:"7px",
+                  border:"1px solid rgba(255,255,255,0.08)", background:"rgba(255,255,255,0.03)",
+                  color: d > 0 ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.3)", cursor:"pointer",
+                }}>{d > 0 ? `+${d}` : d}</button>
+              ))}
+            </div>
+            <div style={{ position:"relative", height:"4px", background:"rgba(255,255,255,0.04)", borderRadius:"2px" }}>
+              <div style={{ position:"absolute", top:0, left:0, height:"100%", width:`${((years-1)/39)*100}%`, background:"linear-gradient(90deg,#4ade8050,#4ade80)", borderRadius:"2px", transition:"width 0.15s" }}/>
+              <input type="range" min={1} max={40} step={1} value={years} onChange={e => setYears(Number(e.target.value))}
+                style={{ position:"absolute", top:"-10px", left:0, width:"100%", height:"24px", WebkitAppearance:"none", appearance:"none", background:"transparent", cursor:"pointer" }}/>
+            </div>
+          </div>
+
         </div>
 
-        {/* Assets */}
+        {/* Assets — Accordéon catégorisé */}
         <div style={{ marginBottom:"24px", animation:"fadeUp 0.6s ease 0.15s both" }}>
           <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.3)", letterSpacing:"2px", textTransform:"uppercase", marginBottom:"14px" }}>Mes actifs</div>
-          <div className="sim-chip-row" style={{ display:"flex", flexWrap:"wrap", gap:"10px" }}>
-            {Object.entries(ASSETS).map(([k,a]) => <Chip key={k} active={actives[k]} label={a.label} icon={a.icon} color={a.color} onClick={()=>toggle(k)}/>)}
+          <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
+            {CATEGORIES.map(cat => (
+              <div key={cat.key} style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:"14px", overflow:"hidden" }}>
+                <button onClick={() => setOpenCats(p => ({...p, [cat.key]: !p[cat.key]}))} style={{
+                  display:"flex", alignItems:"center", gap:"10px", width:"100%", padding:"14px 18px",
+                  background:"transparent", border:"none", cursor:"pointer", transition:"background 0.2s",
+                }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                >
+                  <span style={{ fontSize:"14px" }}>{cat.icon}</span>
+                  <span style={{ fontFamily:"'Sora'", fontSize:"11px", fontWeight:500, color:"rgba(255,255,255,0.45)", letterSpacing:"1px", textTransform:"uppercase", flex:1, textAlign:"left" }}>{cat.label}</span>
+                  <span style={{ fontFamily:"'Sora'", fontSize:"14px", color:"rgba(255,255,255,0.2)", transform: openCats[cat.key] ? "rotate(180deg)" : "rotate(0)", transition:"transform 0.25s" }}>▾</span>
+                </button>
+                {openCats[cat.key] && (
+                  <div className="sim-chip-row" style={{ display:"flex", flexWrap:"wrap", gap:"8px", padding:"4px 14px 14px" }}>
+                    {cat.assets.map(k => {
+                      const a = ASSETS[k];
+                      return (
+                        <div key={k} style={{ position:"relative" }}>
+                          <Chip active={actives[k]} label={a.label} icon={a.icon} color={a.color} onClick={() => toggle(k)} />
+                          {a.staking && actives[k] && (
+                            <div style={{
+                              position:"absolute", top:"-7px", right:"-4px",
+                              fontFamily:"'JetBrains Mono'", fontSize:"8px", fontWeight:700,
+                              color:"#0b0b0f", background: a.color,
+                              padding:"2px 5px", borderRadius:"4px", letterSpacing:"0.5px", lineHeight:1,
+                            }}>
+                              STAKING {a.staking}%
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -423,6 +714,22 @@ export default function SimulateurDCA() {
 
             <div style={{ textAlign:"center", marginTop:"40px", fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.1)", letterSpacing:"0.5px" }}>
               Rendements passés ne préjugent pas des rendements futurs · Simulation indicative · Pas de frais ni fiscalité inclus
+            </div>
+
+            {/* Export */}
+            <div style={{ textAlign:"center", marginTop:"32px", animation:"fadeUp 0.6s ease 0.3s both" }}>
+              <button onClick={generateExportHTML} style={{
+                fontFamily:"'Sora'", fontSize:"13px", fontWeight:600,
+                padding:"14px 32px", borderRadius:"12px",
+                border:"1px solid rgba(74,222,128,0.3)", background:"rgba(74,222,128,0.08)",
+                color:"#4ade80", cursor:"pointer", letterSpacing:"0.5px", transition:"all 0.3s",
+              }}
+                onMouseEnter={e=>{e.currentTarget.style.background="rgba(74,222,128,0.15)";e.currentTarget.style.borderColor="rgba(74,222,128,0.5)";}}
+                onMouseLeave={e=>{e.currentTarget.style.background="rgba(74,222,128,0.08)";e.currentTarget.style.borderColor="rgba(74,222,128,0.3)";}}
+              >
+                ↓ Exporter mon plan
+              </button>
+              <div style={{ fontFamily:"'Sora'", fontSize:"10px", color:"rgba(255,255,255,0.2)", marginTop:"8px" }}>Fichier HTML · Imprimable en PDF via Ctrl+P</div>
             </div>
           </>
         )}
